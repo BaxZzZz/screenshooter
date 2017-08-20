@@ -21,17 +21,17 @@ image::~image()
 
 std::size_t image::get_pixel(int x, int y) const
 {
-    return XGetPixel(x11_image_,x,y);
+    return XGetPixel(x11_image_, x, y);
 }
 
-int image::get_width() const
+std::size_t image::get_width() const
 {
-    return x11_image_->width;
+    return std::size_t(x11_image_->width);
 }
 
-int image::get_height() const
+std::size_t image::get_height() const
 {
-    return x11_image_->height;
+    return std::size_t(x11_image_->height);
 }
 
 int image::get_depth() const

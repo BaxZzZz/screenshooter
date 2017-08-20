@@ -15,12 +15,12 @@ void shooter::start(const std::string& display_name, image_event_handler& event_
 {
     if (is_started_)
     {
-        throw std::runtime_error("shooter already started");
+        throw std::runtime_error("Shooter already started");
     }
 
     if (display_name.empty())
     {
-        throw std::runtime_error("empty display name");
+        throw std::runtime_error("Empty display name");
     }
 
     display_.open(display_name);
@@ -34,7 +34,7 @@ void shooter::stop()
 {
     if (!is_started_)
     {
-        throw std::runtime_error("shooter already stopped");
+        throw std::runtime_error("Shooter already stopped");
     }
 
     is_started_ = false;

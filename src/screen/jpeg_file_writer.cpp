@@ -3,7 +3,7 @@
 #include <chrono>
 #include <jpeglib.h>
 
-#include "screen/image_file_writer.h"
+#include "screen/jpeg_file_writer.h"
 
 namespace screen
 {
@@ -29,48 +29,45 @@ std::string get_current_time_as_string()
 
 } // namespace
 
-
-image_file_writer::image_file_writer(const std::string& path) :
+jpeg_file_writer::jpeg_file_writer(const std::string& path) :
     path_(path)
 {
 
 }
 
-void image_file_writer::write_jpeg_file(const std::string& filename, const ui::image::ptr image)
+void jpeg_file_writer::write(const std::string& filename, const ui::image::ptr image)
 {
     if (filename.empty())
     {
         throw std::runtime_error("empty filename");
     }
 
-    file_stream_ = std::fopen(filename.c_str(), "wb");
+    auto file = std::fopen(filename.c_str(), "wb");
 
-    if (file_stream_ == nullptr)
+    if (file == nullptr)
     {
-        throw std::runtime_error("Failed to open output file" + filename);
+        throw std::runtime_error("Failed to open output file: " + filename);
     }
 
-    struct jpeg_compress_struct cinfo;
-    struct jpeg_error_mgr       jerr;
-    JSAMPROW row_pointer;
+    std::vector<std::uint8_t> buffer(3 * image->get_width() * image->get_height());
 
-    char* buffer = static_cast<char*>(malloc(sizeof(char) * 3 * image->get_width() *
-                                             image->get_height()));
-
-    for (int y = 0; y < image->get_height(); ++y)
+    for (std::size_t y = 0; y < image->get_height(); ++y)
     {
-        for (int x = 0; x < image->get_width(); ++x)
+        for (std::size_t x = 0; x < image->get_width(); ++x)
         {
-            auto pixel = image->get_pixel(x,y);
-            buffer[y*image->get_width()*3+x*3+0] = (char)(pixel>>16);
-            buffer[y*image->get_width()*3+x*3+1] = (char)((pixel&0x00ff00)>>8);
-            buffer[y*image->get_width()*3+x*3+2] = (char)(pixel&0x0000ff);
+            auto pixel = image->get_pixel(int(x), int(y));
+            buffer[y * image->get_width() * 3 + x * 3 + 0] = std::uint8_t(pixel >> 16);
+            buffer[y * image->get_width() * 3 + x * 3 + 1] = std::uint8_t((pixel & 0x00ff00) >> 8);
+            buffer[y * image->get_width() * 3 + x * 3 + 2] = std::uint8_t(pixel & 0x0000ff);
         }
     }
 
+    jpeg_compress_struct cinfo;
+    jpeg_error_mgr       jerr;
+
     cinfo.err = jpeg_std_error(&jerr);
     jpeg_create_compress(&cinfo);
-    jpeg_stdio_dest(&cinfo, file_stream_);
+    jpeg_stdio_dest(&cinfo, file);
 
     cinfo.image_width      = image->get_width();
     cinfo.image_height     = image->get_height();
@@ -83,21 +80,20 @@ void image_file_writer::write_jpeg_file(const std::string& filename, const ui::i
 
     while (cinfo.next_scanline < cinfo.image_height)
     {
-        row_pointer = (JSAMPROW) &buffer[cinfo.next_scanline
-                      *(image->get_depth()>>3)*image->get_width()];
+        auto index       = cinfo.next_scanline * (image->get_depth() >> 3) * image->get_width();
+        auto row_pointer = static_cast<JSAMPROW>(&buffer[index]);
         jpeg_write_scanlines(&cinfo, &row_pointer, 1);
     }
 
-    free(buffer);
     jpeg_finish_compress(&cinfo);
-    fclose(file_stream_);
+    fclose(file);
 }
 
-void image_file_writer::on_image_received(const std::string& display_name,
-                                          const ui::image::ptr image)
+void jpeg_file_writer::on_image_received(const std::string& display_name,
+                                         const ui::image::ptr image)
 {
     auto filename = path_+ '/' + display_name + '-' + get_current_time_as_string() + ".jpeg";
-    write_jpeg_file(filename, image);
+    write(filename, image);
 }
 
 } // namespace screen

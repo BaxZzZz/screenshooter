@@ -22,9 +22,9 @@ public:
 
     std::size_t get_pixel(int x, int y) const;
 
-    int get_width() const;
+    std::size_t get_width() const;
 
-    int get_height() const;
+    std::size_t get_height() const;
 
     int get_depth() const;
 

@@ -1,64 +1,90 @@
 #include <iostream>
-#include <fstream>
-#include <atomic>
-#include <csignal>
+#include <tclap/CmdLine.h>
+#include <sys/stat.h>
 
-#include "ui/display.h"
-#include "screen/image_file_writer.h"
+#include "process/signal_handler.h"
+#include "process/daemonizer.h"
+#include "screen/jpeg_file_writer.h"
 #include "screen/monitor.h"
-
-namespace
-{
-
-std::atomic<bool> is_running { true };
-
-void signal_handler(int signal_number)
-{
-    std::cout << "Interrupt signal " << signal_number << " received." << std::endl;
-    is_running = false;
-}
-
-} // namespace
-
-const std::string DEFAULT_PATH = "/tmp";
+#include "ui/display.h"
 
 using screen::monitor;
-using screen::image_file_writer;
+using screen::jpeg_file_writer;
 
-int main()
+bool configure_options(int argc, char* argv[], bool& doDaemon, std::string& screenshot_path)
 {
-    signal(SIGINT, signal_handler);
+    try
+    {
+        TCLAP::CmdLine cmd("Application for creating screenshots of all active user sessions"
+                           , ' ', "0.1");
+
+        TCLAP::ValueArg<std::string> pathArg("p", "path", "Path for screenshots",
+                                             false, "/tmp/screenshots", "string");
+        cmd.add(pathArg);
+
+        TCLAP::SwitchArg daemonArg("d","daemon","Daemonize process", cmd, false);
+
+        cmd.parse(argc, argv);
+
+        doDaemon        = daemonArg.getValue();
+        screenshot_path = pathArg.getValue();
+    }
+    catch (TCLAP::ArgException& ex)
+    {
+        std::cout << "Error: " << ex.error() << std::endl;
+        return false;
+    }
+
+    return true;
+ }
+
+int main(int argc, char* argv[])
+{
+    bool doDaemon;
+    std::string screenshot_path;
+
+    if (!configure_options(argc, argv, doDaemon, screenshot_path))
+    {
+        return -1;
+    }
+
+    process::signal_handler signal_handler({ SIGINT, SIGTERM });
+
+    if (doDaemon)
+    {
+        if (!process::daemonize())
+        {
+            return -1;
+        }
+    }
+
+    std::cout << "Start screenshooter application, path: " << screenshot_path << std::endl;
+    mkdir(screenshot_path.c_str(), 0777);
 
     try
     {
         monitor screen_monitor;
-        image_file_writer::ptr_array writers;
+        jpeg_file_writer::ptr_array writers;
 
         auto display_names = ui::find_active_displays();
 
         for (const auto& display_name : display_names)
         {
-            auto writer = std::make_shared<image_file_writer>(DEFAULT_PATH);
+            auto writer = std::make_shared<jpeg_file_writer>(screenshot_path);
             screen_monitor.add_display(display_name, *writer);
             writers.push_back(std::move(writer));
         }
 
-        std::cout << "Application started." << std::endl;
-
-        while (is_running)
-        {
-            std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-        }
-
+        signal_handler.wait();
         screen_monitor.remove_all();
-
-        std::cout << "Application stoppped." << std::endl;
     }
     catch (std::exception& ex)
     {
         std::cout << ex.what() << std::endl;
         return -1;
     }
+
+    std::cout << "Stop screenshooter application" << std::endl;
 
     return 0;
 }

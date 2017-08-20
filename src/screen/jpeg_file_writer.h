@@ -1,5 +1,5 @@
-#ifndef SCREEN_IMAGE_FILE_WRITER_H
-#define SCREEN_IMAGE_FILE_WRITER_H
+#ifndef SCREEN_JPEG_FILE_WRITER_H
+#define SCREEN_JPEG_FILE_WRITER_H
 
 #include <memory>
 #include <vector>
@@ -9,18 +9,18 @@
 namespace screen
 {
 
-class image_file_writer : public image_event_handler
+class jpeg_file_writer : public image_event_handler
 {
 public:
 
-    using ptr       = std::shared_ptr<image_file_writer>;
+    using ptr       = std::shared_ptr<jpeg_file_writer>;
     using ptr_array = std::vector<ptr>;
 
 public:
 
-    image_file_writer(const std::string& path);
+    jpeg_file_writer(const std::string& path);
 
-    void write_jpeg_file(const std::string& filename, const ui::image::ptr image);
+    void write(const std::string& filename, const ui::image::ptr image);
 
 private: // image_event_handler
 
@@ -28,11 +28,10 @@ private: // image_event_handler
 
 private:
 
-    std::FILE*  file_stream_;
     std::string path_;
 
 };
 
 } // namespace screen
 
-#endif // SCREEN_IMAGE_FILE_WRITER_H
+#endif // SCREEN_JPEG_FILE_WRITER_H

@@ -15,7 +15,9 @@ SET(HEADERS
     src/screen/shooter.h
     src/screen/monitor.h
     src/screen/image_event_handler.h
-    src/screen/image_file_writer.h
+    src/screen/jpeg_file_writer.h
+    src/process/signal_handler.h
+    src/process/daemonizer.h
 )
 
 SET(SOURCES
@@ -23,7 +25,9 @@ SET(SOURCES
     src/ui/image.cpp
     src/screen/shooter.cpp
     src/screen/monitor.cpp
-    src/screen/image_file_writer.cpp
+    src/screen/jpeg_file_writer.cpp
+    src/process/signal_handler.cpp
+    src/process/daemonizer.cpp
     src/main.cpp
 )
 
