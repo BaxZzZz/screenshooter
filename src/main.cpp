@@ -40,6 +40,8 @@ bool configure_options(int argc, char* argv[], bool& doDaemon, std::string& scre
 
 int main(int argc, char* argv[])
 {
+    process::signal_register({ SIGINT, SIGTERM });
+
     bool doDaemon;
     std::string screenshot_path;
 
@@ -47,8 +49,6 @@ int main(int argc, char* argv[])
     {
         return -1;
     }
-
-    process::signal_handler signal_handler({ SIGINT, SIGTERM });
 
     if (doDaemon)
     {
@@ -59,6 +59,7 @@ int main(int argc, char* argv[])
     }
 
     std::cout << "Start screenshooter application, path: " << screenshot_path << std::endl;
+
     mkdir(screenshot_path.c_str(), 0777);
 
     try
@@ -75,7 +76,7 @@ int main(int argc, char* argv[])
             writers.push_back(std::move(writer));
         }
 
-        signal_handler.wait();
+        process::wait_signals();
         screen_monitor.remove_all();
     }
     catch (std::exception& ex)

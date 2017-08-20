@@ -15,14 +15,17 @@ bool daemonize()
         return false;
     }
 
-    if (!pid)
+    if (pid == 0)
     {
         umask(0);
         setsid();
+
         chdir("/");
+
         close(STDIN_FILENO);
         close(STDOUT_FILENO);
         close(STDERR_FILENO);
+
         return true;
     }
 

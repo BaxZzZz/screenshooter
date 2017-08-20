@@ -8,20 +8,11 @@
 namespace process
 {
 
-class signal_handler
-{
+using signal_array = std::vector<int>;
 
-public:
+void signal_register(const signal_array& signals);
 
-    using signal_array = std::vector<int>;
-
-public:
-
-    signal_handler(const signal_array& signals);
-
-    void wait();
-
-};
+void wait_signals();
 
 } // namespace system
 
