@@ -1,0 +1,21 @@
+language: cpp
+dist: precise
+compiler:
+- gcc
+branches:
+  only:
+  - master
+before_install:
+- sudo apt-get install libjpeg-turbo8-dev libtclap-dev libx11-dev
+before_script:
+- mkdir build
+- cd build
+- cmake ../
+script:
+- make
+notifications:
+  recipients:
+  - baxzzzz@gmail.com
+  email:
+    on_success: change
+    on_failure: always
