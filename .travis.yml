@@ -1,21 +1,34 @@
 language: cpp
-dist: precise
-compiler:
-- gcc
+compiler: gcc
+dist: trusty
+
+before_install:
+  # C++14
+  - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+  - sudo apt-get update -qq
+  # Dependencies
+  - sudo apt-get install libjpeg-turbo8-dev libtclap-dev libx11-dev
+
+install:
+  # C++14
+  - sudo apt-get install -qq g++-5
+  - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-5 90
+
 branches:
   only:
-  - master
-before_install:
-- sudo apt-get install libjpeg-turbo8-dev libtclap-dev libx11-dev
+    - master
+
 before_script:
-- mkdir build
-- cd build
-- cmake ../
+  - mkdir build
+  - cd build
+  - cmake ../
+
 script:
-- make
+  - make
+
 notifications:
   recipients:
-  - baxzzzz@gmail.com
+    - baxzzzz@gmail.com
   email:
     on_success: change
     on_failure: always
