@@ -25,6 +25,13 @@ If you are on debian-based distro you can grab them with:
 sudo apt install libjpeg-turbo8-dev libtclap-dev libx11-dev
 </pre>
 
+If you are on Gentoo Linux distro you can grab them with:
+
+<pre>
+sudo emerge -av media-libs/libjpeg-turbo dev-cpp/tclap x11-libs/libX11
+</pre>
+
+
 **Command line options:**
 
 <pre>
