@@ -1,4 +1,17 @@
-**Application for creating screenshots of all active user sessions.**
+**Application for catching screenshots of all active users' displays.**
+
+*CONFIGURATION:*
+
+Before starting the application make sure that the account used for launching the app is able to access other users' displays. To provide the access do the following:
+
+sudo xauth merge ~otherusename/.Xauthority
+sudo chown currenusername:cureenusername ~/.Xauthority
+
+Where:
+
+otherusename   - account name to which display you need the access
+currenusername - current account name
+
 
 *USAGE:*
 
