@@ -49,7 +49,7 @@ public:
     image::ptr get_image();
 
     /*!
-     * \brief Mehtod for getting current display name
+     * \brief Method for getting current display name
      * \return Return string of display name
      */
     const std::string& get_name() const;
