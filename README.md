@@ -22,7 +22,7 @@ Screenshooter uses cmake, and depends on libtclap-1.2.1, libjpeg-1.5.1, libX11-1
 If you are on debian-based distro you can grab them with:
 
 <pre>
-sudo apt install libjpeg-turbo8-dev, libtclap-dev, libx11-dev
+sudo apt install libjpeg-turbo8-dev libtclap-dev libx11-dev
 </pre>
 
 **Command line options:**
