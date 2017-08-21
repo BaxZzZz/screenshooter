@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/BaxZzZz/screenshooter.svg?branch=master)](https://travis-ci.org/BaxZzZz/screenshooter) 
+
 **Description:**
 
 Application for catching screenshots of all active users' displays.
