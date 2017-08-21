@@ -8,6 +8,9 @@
 namespace screen
 {
 
+/*!
+ * \brief Interface of received image events handler
+ */
 class image_event_handler
 {
 
@@ -15,6 +18,11 @@ public:
 
     virtual ~image_event_handler() = default;
 
+    /*!
+     * \brief Method of image reception event handling
+     * \param [in] display_name - display name
+     * \param [in] image        - image pointer
+     */
     virtual void on_image_received(const std::string& display_name,
                                    const ui::image::ptr image) = 0;
 

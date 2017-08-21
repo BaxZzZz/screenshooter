@@ -4,6 +4,10 @@
 namespace process
 {
 
+/*!
+ * \brief Function for process deamonizing
+ * \return If successful returns true, else false
+ */
 bool daemonize();
 
 } // namespace process

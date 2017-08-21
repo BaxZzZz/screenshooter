@@ -12,6 +12,9 @@
 namespace screen
 {
 
+/*!
+ * \brief Class for catching screenshots of user display
+ */
 class shooter
 {
 
@@ -24,8 +27,16 @@ public:
 
     ~shooter();
 
+    /*!
+     * \brief Method for starting catching screenshots
+     * \param [in] display_name  - display name
+     * \param [in] event_handler - handler of images
+     */
     void start(const std::string& display_name, image_event_handler& event_handler);
 
+    /*!
+     * \brief Method for stopping catching
+     */
     void stop();
 
 private:
