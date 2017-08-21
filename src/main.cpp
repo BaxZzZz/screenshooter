@@ -15,7 +15,7 @@ bool configure_options(int argc, char* argv[], bool& doDaemon, std::string& scre
 {
     try
     {
-        TCLAP::CmdLine cmd("Application for creating screenshots of all active user sessions"
+        TCLAP::CmdLine cmd("Application for catching screenshots of all active users' displays"
                            , ' ', "0.1");
 
         TCLAP::ValueArg<std::string> pathArg("p", "path", "Path for screenshots",
