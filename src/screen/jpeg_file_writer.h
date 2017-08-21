@@ -24,6 +24,7 @@ public:
     /*!
      * \brief Constructor
      * \param [in] path - path for writing files
+     * \throw std::runtime_error
      */
     jpeg_file_writer(const std::string& path);
 
@@ -31,6 +32,7 @@ public:
      * \brief Method for writing image to file
      * \param [in] filename - filename with full path
      * \param [in] image    - image pointer
+     * \throw std::runtime_error
      */
     void write(const std::string& filename, const ui::image::ptr image);
 

@@ -20,7 +20,10 @@ bool daemonize()
         umask(0);
         setsid();
 
-        chdir("/");
+        if (chdir("/") != 0)
+        {
+            return  false;
+        }
 
         close(STDIN_FILENO);
         close(STDOUT_FILENO);

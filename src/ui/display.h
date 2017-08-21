@@ -31,17 +31,20 @@ public:
     /*!
      * \brief Method for opening X11 display
      * \param [in] display_name - display name
+     * \throw std::runtime_error
      */
     void open(const std::string& display_name);
 
     /*!
      * \brief Method for closing X11 display
+     * \throw std::runtime_error
      */
     void close();
 
     /*!
      * \brief Method for getting display's images
      * \return Return image pointer
+     * \throw std::runtime_error
      */
     image::ptr get_image();
 
@@ -61,6 +64,7 @@ private:
 /*!
  * \brief Function for searching names of active displays
  * \return Return array of display names
+ * \throw std::runtime_error
  */
 display::names find_active_displays();
 

@@ -23,12 +23,14 @@ public:
      * \brief Method of adding monitoring of user's display
      * \param [in] display_name - dispaly name
      * \param event_handler     - handler of images
+     * \throw std::runtime_error
      */
     void add_display(const std::string& display_name, image_event_handler& event_handler);
 
     /*!
      * \brief Method of deletion
      * \param [in] display_name - display name
+     * \throw std::runtime_error
      */
     void remove_display(const std::string& display_name);
 

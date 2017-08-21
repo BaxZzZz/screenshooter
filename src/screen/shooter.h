@@ -31,11 +31,13 @@ public:
      * \brief Method for starting catching screenshots
      * \param [in] display_name  - display name
      * \param [in] event_handler - handler of images
+     * \throw std::runtime_error
      */
     void start(const std::string& display_name, image_event_handler& event_handler);
 
     /*!
      * \brief Method for stopping catching
+     * \throw std::runtime_error
      */
     void stop();
 
