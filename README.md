@@ -1,8 +1,8 @@
-*Description*
+**Description:**
 
 Application for catching screenshots of all active users' displays.
 
-*Configuration:*
+**Configuration:**
 
 Before starting the application make sure that the account used for launching the app is able to access other users' displays. To provide the access do the following:
 
@@ -15,10 +15,9 @@ Where:
 + otherusename - account name to which display you need the access
 + currenusername - current account name
 
+**Command line options:**
+
 <pre>
-
-*Command line options*
-
 USAGE:
 
    ./screenshooter  [-d] [-p <string>] [--] [--version] [-h]
