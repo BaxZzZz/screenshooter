@@ -10,12 +10,12 @@ Before starting the application make sure that the account used for launching th
 
 <pre>
 sudo xauth merge ~otherusename/.Xauthority
-sudo chown currenusername:cureenusername ~/.Xauthority
+sudo chown currentusername:currentusername ~/.Xauthority
 </pre>
 
 Where:
 + otherusename - account name to which display you need the access
-+ currenusername - current account name
++ currentusername - current account name
 
 **Dependencies:**
 
